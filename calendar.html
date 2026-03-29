@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>2026 학사일정 캘린더</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="site-header-inner site-header-simple">
+        <div class="brand-block">
+          <p class="brand-year">Visual Design Student Council 2026</p>
+          <strong>국민대학교 시각디자인학과</strong>
+        </div>
+        <div class="header-tools"></div>
+      </div>
+    </header>
+    <main class="calendar-page">
+      <section class="calendar-shell">
+        <div class="calendar-panel">
+          <section class="calendar-view active" id="full-calendar-view">
+            <div class="calendar-topbar">
+              <div>
+                <p class="month-label">Academic Calendar</p>
+                <h2>전체 캘린더</h2>
+                <p class="panel-description">3월부터 12월까지 주요 학사 일정과 학생회 행사를 한 번에 확인할 수 있습니다.</p>
+              </div>
+              <div class="calendar-links">
+                <a class="inline-link primary home-icon-link" href="index.html" aria-label="메인으로 돌아가기"><img src="assets/home-icon.svg" alt="" aria-hidden="true" /></a>
+              </div>
+            </div>
+            <div class="full-calendar-grid" id="full-calendar-grid"></div>
+            <p class="source-note">
+              공식 기준: 국민대학교 학사안내 2026학년도 학사일정
+              <a href="https://www.kookmin.ac.kr/user/scGuid/scSchedule/index.do" target="_blank" rel="noreferrer">
+                공식 페이지
+              </a>
+            </p>
+          </section>
+
+          <section class="calendar-view" id="month-calendar-view">
+            <div class="calendar-topbar">
+              <div>
+                <p id="month-label" class="month-label"></p>
+                <h2 id="month-title"></h2>
+                <p id="month-description" class="panel-description"></p>
+              </div>
+              <div class="calendar-links">
+                <a class="calendar-add-button" href="calendar.html" aria-label="전체 보기"><img src="assets/calendar-add.svg" alt="" aria-hidden="true" /></a>
+                <a class="inline-link primary home-icon-link" href="index.html" aria-label="메인으로 돌아가기"><img src="assets/home-icon.svg" alt="" aria-hidden="true" /></a>
+              </div>
+            </div>
+
+            <div class="month-navigation" id="month-navigation"></div>
+
+            <div class="calendar-grid-layout">
+              <section class="calendar-board">
+                <div class="calendar-weekdays">
+                  <span>일</span>
+                  <span>월</span>
+                  <span>화</span>
+                  <span>수</span>
+                  <span>목</span>
+                  <span>금</span>
+                  <span>토</span>
+                </div>
+                <div class="calendar-days" id="calendar-days"></div>
+              </section>
+
+              <aside class="event-board">
+                <div class="month-header">
+                  <div>
+                    <p class="panel-kicker">Monthly Events</p>
+                    <h3>이달의 주요 일정</h3>
+                  </div>
+                </div>
+                <ul class="month-event-list" id="month-events"></ul>
+                <p class="source-note">
+                  공식 기준: 국민대학교 학사안내 2026학년도 학사일정
+                  <a href="https://www.kookmin.ac.kr/user/scGuid/scSchedule/index.do" target="_blank" rel="noreferrer">
+                    공식 페이지
+                  </a>
+                </p>
+              </aside>
+            </div>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+    <script src="language.js"></script>
+  </body>
+</html>

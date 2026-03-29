@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>각 과실 시간표</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="site-header-inner site-header-simple">
+        <div class="brand-block">
+          <p class="brand-year">Visual Design Student Council 2026</p>
+          <strong>국민대학교 시각디자인학과</strong>
+        </div>
+      </div>
+    </header>
+
+    <main class="room-schedule-page">
+      <section class="room-schedule-shell">
+        <div class="room-schedule-panel">
+          <div class="room-schedule-topbar">
+            <div>
+              <p class="panel-kicker">Facilities Schedule</p>
+              <h1 class="room-schedule-title">각 과실 시간표</h1>
+            </div>
+            <div class="calendar-links">
+              <a class="inline-link primary home-icon-link" href="index.html" aria-label="메인으로 돌아가기"><img src="assets/home-icon.svg" alt="" aria-hidden="true" /></a>
+            </div>
+          </div>
+
+          <div class="room-grade-tabs" aria-label="학년 선택">
+            <button class="room-grade-tab active" type="button" data-grade-tab="1">1학년</button>
+            <button class="room-grade-tab" type="button" data-grade-tab="2">2학년</button>
+            <button class="room-grade-tab" type="button" data-grade-tab="3">3학년</button>
+            <button class="room-grade-tab" type="button" data-grade-tab="4">4학년</button>
+          </div>
+
+          <section class="room-schedule-board" aria-labelledby="room-schedule-heading">
+            <div class="room-schedule-board-inner">
+              <div class="room-schedule-head">
+                <span class="room-schedule-head-spacer"></span>
+                <span class="room-schedule-day">월</span>
+                <span class="room-schedule-day">화</span>
+                <span class="room-schedule-day">수</span>
+                <span class="room-schedule-day">목</span>
+                <span class="room-schedule-day">금</span>
+              </div>
+              <div class="room-schedule-main">
+                <div class="room-schedule-times-left" id="room-schedule-times-left"></div>
+                <div class="room-schedule-grid" id="room-schedule-grid"></div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+    <script src="language.js"></script>
+  </body>
+</html>

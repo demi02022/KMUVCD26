@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>휴학생 · 복학생 소통 창구</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-board-type="returning">
+    <main class="board-page">
+      <section class="board-shell">
+        <div class="board-page-top">
+          <div>
+            <p class="portal-eyebrow">Returning Students Board</p>
+            <h1 class="board-page-title">휴학생 · 복학생 소통 게시판</h1>
+          </div>
+          <div class="board-profile board-profile-top" id="board-profile">
+            <span class="profile-label">내 프로필</span>
+            <strong id="profile-name">설정 전</strong>
+            <span id="profile-grade">학년 미선택</span>
+            <div class="board-top-actions">
+              <button class="inline-link" id="edit-profile" type="button">프로필 수정</button>
+              <button class="post-submit" id="open-write-modal" type="button">글쓰기</button>
+            </div>
+          </div>
+        </div>
+
+        <section class="notice-strip">
+          <div class="notice-card">
+            <span class="notice-chip">공지</span>
+            <div>
+              <strong>2학기 복학 신청 기간</strong>
+              <p>2026년 7월 6일 - 2026년 7월 24일</p>
+            </div>
+            <a class="inline-link primary" href="https://www.kookmin.ac.kr/comm/menu/user/e1c6c542f5c3f009ef24a10b89683abd/content/index.do" target="_blank" rel="noreferrer">복학 신청 바로가기</a>
+          </div>
+          <div class="notice-card">
+            <span class="notice-chip">공지</span>
+            <div>
+              <strong>2학기 휴학 신청 안내</strong>
+              <p>ON국민 포털에서 휴학 신청과 승인 상태를 확인할 수 있습니다.</p>
+            </div>
+            <a class="inline-link notice-mint-link" href="https://www.kookmin.ac.kr/comm/menu/user/e1c6c542f5c3f009ef24a10b89683abd/content/index.do" target="_blank" rel="noreferrer">휴학 신청 바로가기</a>
+          </div>
+        </section>
+
+        <section class="posts-panel board-feed-panel">
+          <div class="board-table-head">
+            <span>날짜 / 시간</span>
+            <span>제목</span>
+            <span>작성자</span>
+            <span>댓글</span>
+          </div>
+          <div id="board-post-list" class="board-post-list board-post-table"></div>
+        </section>
+
+        <div class="board-bottom-link">
+          <a class="inline-link primary home-icon-link" href="index.html" aria-label="메인으로 돌아가기"><img src="assets/home-icon.svg" alt="" aria-hidden="true" /></a>
+        </div>
+      </section>
+    </main>
+
+    <div class="profile-modal" id="profile-modal" role="dialog" aria-modal="true" aria-labelledby="profile-modal-title">
+      <div class="profile-card">
+        <p class="panel-kicker">Welcome</p>
+        <h2 id="profile-modal-title">닉네임과 학년을 설정해주세요</h2>
+        <form id="profile-form" class="profile-form">
+          <input id="nickname-input" type="text" maxlength="16" placeholder="닉네임" required />
+          <select id="grade-select" required>
+            <option value="">학년 선택</option>
+            <option value="1">1학년</option>
+            <option value="2">2학년</option>
+            <option value="3">3학년</option>
+            <option value="4">4학년</option>
+          </select>
+          <button class="post-submit" type="submit">입장하기</button>
+        </form>
+        <p class="profile-guide">학년별 닉네임 색상: 1학년 흰색, 2학년 노란색, 3학년 파란색, 4학년 빨간색</p>
+      </div>
+    </div>
+
+    <div class="profile-modal" id="write-modal" role="dialog" aria-modal="true" aria-labelledby="write-modal-title">
+      <div class="profile-card profile-card-large">
+        <p class="panel-kicker">Write Post</p>
+        <h2 id="write-modal-title">새 게시글 작성</h2>
+        <form id="post-form" class="profile-form">
+          <input id="post-title" type="text" placeholder="제목을 입력하세요" maxlength="60" required />
+          <textarea id="post-content" rows="6" placeholder="내용을 입력하세요." required></textarea>
+          <div class="modal-actions">
+            <button class="inline-link" id="close-write-modal" type="button">닫기</button>
+            <button class="post-submit" type="submit">게시하기</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="profile-modal" id="detail-modal" role="dialog" aria-modal="true" aria-labelledby="detail-modal-title">
+      <div class="profile-card profile-card-detail">
+        <div class="detail-modal-top">
+          <div>
+            <p class="panel-kicker">Post Detail</p>
+            <h2 id="detail-modal-title">게시글 보기</h2>
+          </div>
+          <button class="inline-link" id="close-detail-modal" type="button">닫기</button>
+        </div>
+        <div id="board-detail" class="board-detail"></div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="language.js"></script>
+  </body>
+</html>

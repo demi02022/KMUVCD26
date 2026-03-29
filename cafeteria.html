@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>오늘의 학식 메뉴</title>
+    <style>
+      :root {
+        --bg1: #2a3d5d;
+        --bg2: #1b2b45;
+        --bg3: #122038;
+        --panel: #fbf7ee;
+        --line: rgba(12, 26, 50, 0.12);
+        --ink: #101114;
+        --muted: #5d6473;
+        --navy: #0c1a32;
+        --red: #c41230;
+      }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; min-height: 100%; }
+      body {
+        font-family: sans-serif;
+        color: var(--ink);
+        background: linear-gradient(180deg, var(--bg1) 0%, var(--bg2) 44%, var(--bg3) 100%);
+      }
+      .page {
+        min-height: 100vh;
+        padding: 24px;
+      }
+      .shell {
+        width: min(1460px, 100%);
+        margin: 0 auto;
+      }
+      .panel {
+        display: grid;
+        gap: 18px;
+        padding: 24px;
+        border-radius: 0;
+        background: linear-gradient(180deg, rgba(255,255,255,0.99) 0%, rgba(248,244,236,0.99) 100%);
+        box-shadow: 0 20px 44px rgba(7, 17, 32, 0.18);
+      }
+      .topbar,
+      .weekbar {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 14px;
+        flex-wrap: wrap;
+      }
+      .kicker {
+        margin: 0 0 6px;
+        color: var(--red);
+        font-size: 12px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        font-weight: 700;
+      }
+      h1, h2, h3, h4, p { margin: 0; }
+      h1 {
+        font-size: clamp(28px, 3vw, 42px);
+        line-height: 1.05;
+      }
+      .description,
+      .note,
+      .status,
+      .source {
+        color: var(--muted);
+        line-height: 1.6;
+      }
+      .links {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 42px;
+        padding: 10px 16px;
+        border-radius: 0;
+        border: 1px solid var(--line);
+        background: #fff;
+        color: var(--navy);
+        text-decoration: none;
+        font-weight: 700;
+      }
+      .link.primary {
+        background: var(--navy);
+        color: #fff;
+        border-color: var(--navy);
+      }
+      .home-icon-link {
+        width: 44px;
+        height: 44px;
+        min-height: 44px;
+        padding: 0;
+        border-radius: 0;
+        box-shadow: 0 10px 22px rgba(7, 17, 32, 0.16);
+      }
+      .home-icon-link img {
+        width: 20px;
+        height: 20px;
+        display: block;
+      }
+      .week-title {
+        color: var(--navy);
+        font-size: 16px;
+        font-weight: 700;
+      }
+      .grid-wrap {
+        overflow-x: auto;
+        padding-top: 12px;
+        padding-bottom: 6px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(7, minmax(210px, 1fr));
+        gap: 14px;
+        min-width: 1540px;
+      }
+      .day-card {
+        display: grid;
+        align-content: start;
+        gap: 14px;
+        padding: 18px;
+        border-radius: 0;
+        border: 1px solid rgba(171, 154, 123, 0.24);
+        background: var(--panel);
+        box-shadow: 0 14px 30px rgba(7, 17, 32, 0.08);
+      }
+      .day-card.is-today {
+        border-color: rgba(78, 153, 95, 0.92);
+        background:
+          linear-gradient(180deg, rgba(221, 245, 227, 0.95) 0%, rgba(251, 247, 238, 0.98) 22%, rgba(251, 247, 238, 1) 100%);
+        box-shadow: 0 22px 40px rgba(78, 153, 95, 0.18), 0 0 0 4px rgba(122, 197, 136, 0.28);
+      }
+      .day-header { display: grid; gap: 8px; }
+      .day-date {
+        color: var(--red);
+        font-size: 12px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        font-weight: 700;
+      }
+      .day-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+      .day-row h3 {
+        font-size: 26px;
+        line-height: 1;
+      }
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 30px;
+        padding: 4px 10px;
+        border-radius: 0;
+        background: rgba(12, 26, 50, 0.08);
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 700;
+      }
+      .day-card.is-today .badge {
+        background: linear-gradient(180deg, rgba(113, 187, 126, 0.28) 0%, rgba(84, 160, 101, 0.18) 100%);
+        color: #2f6c3c;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.7);
+      }
+      .day-list {
+        display: grid;
+        gap: 12px;
+      }
+      .restaurant {
+        border-radius: 0;
+        border: 1px solid rgba(171, 154, 123, 0.2);
+        background: rgba(255,255,255,0.72);
+        overflow: hidden;
+      }
+      .restaurant-toggle {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 14px;
+        border: 0;
+        background: transparent;
+        color: var(--ink);
+        font: inherit;
+        text-align: left;
+        cursor: pointer;
+      }
+      .restaurant-toggle h4 {
+        font-size: 15px;
+        line-height: 1.35;
+      }
+      .restaurant-arrow {
+        flex-shrink: 0;
+        color: var(--muted);
+        font-size: 14px;
+        transition: transform 180ms ease;
+      }
+      .restaurant.is-open .restaurant-arrow {
+        transform: rotate(180deg);
+      }
+      .restaurant-menu {
+        display: none;
+        padding: 0 14px 14px;
+      }
+      .restaurant.is-open .restaurant-menu {
+        display: grid;
+        gap: 10px;
+      }
+      .item {
+        display: grid;
+        gap: 6px;
+        padding-top: 10px;
+        border-top: 1px solid rgba(171, 154, 123, 0.18);
+      }
+      .restaurant-menu .item:first-of-type {
+        padding-top: 0;
+        border-top: 0;
+      }
+      .item-label {
+        color: var(--navy);
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        font-weight: 700;
+      }
+      .item-menu {
+        color: #26303d;
+        line-height: 1.65;
+        font-size: 14px;
+      }
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 6px;
+        margin-bottom: 6px;
+        padding: 2px 7px;
+        border-radius: 0;
+        background: rgba(196, 18, 48, 0.08);
+        color: var(--red);
+        font-size: 11px;
+        font-weight: 700;
+      }
+      @media (max-width: 900px) {
+        .page { padding: 16px; }
+        .panel { padding: 18px; }
+        .grid { grid-template-columns: repeat(7, minmax(190px, 1fr)); min-width: 1400px; }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <section class="shell">
+        <div class="panel">
+          <div class="topbar">
+            <div>
+              <p class="kicker">Cafeteria Menu</p>
+              <h1>오늘의 학식 메뉴</h1>
+              <p class="description">국민대학교 교내식당 주간 메뉴</p>
+            </div>
+            <div class="links">
+              <a class="link primary home-icon-link" href="index.html" aria-label="메인으로 돌아가기"><img src="assets/home-icon.svg" alt="" aria-hidden="true" /></a>
+              <a class="link" href="https://www.kookmin.ac.kr/user/unLvlh/lvlhSpor/todayMenu/index.do" target="_blank" rel="noreferrer">공식 페이지</a>
+            </div>
+          </div>
+
+          <div class="weekbar">
+            <p class="week-title">이번 주 학식 메뉴</p>
+          </div>
+
+          <p class="status" id="status">메뉴를 불러오는 중입니다.</p>
+
+          <div class="grid-wrap">
+            <div class="grid" id="week-grid"></div>
+          </div>
+
+          <p class="source">공식 학식 페이지 기준 <a href="https://www.kookmin.ac.kr/user/unLvlh/lvlhSpor/todayMenu/index.do" target="_blank" rel="noreferrer">공식 페이지</a></p>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const SOURCE_URL = "https://r.jina.ai/http://https://www.kookmin.ac.kr/user/unLvlh/lvlhSpor/todayMenu/index.do";
+      const ui = {
+        loading: "메뉴를 불러오는 중입니다.",
+        empty: "학식 메뉴가 아직 등록되지 않았습니다.",
+        error: "메뉴를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.",
+        today: "오늘",
+        days: { 일: "일", 월: "월", 화: "화", 수: "수", 목: "목", 금: "금", 토: "토" }
+      };
+      const allowedRestaurants = new Set([
+        "한울식당(법학관 지하1층)",
+        "학생식당(복지관 1층)",
+        "교직원식당(복지관 1층)",
+        "청향 한식당(법학관 5층)",
+        "청향 양식당(법학관 5층)"
+      ]);
+
+      function pad(value) {
+        return String(value).padStart(2, "0");
+      }
+
+      function todayIso() {
+        const now = new Date();
+        return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+      }
+
+      function escapeHtml(text) {
+        return text
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/\"/g, "&quot;")
+          .replace(/'/g, "&#39;");
+      }
+
+      function normalizeMenuText(text) {
+        return text.replace(/\s+/g, " ").replace(/\|/g, " ").trim();
+      }
+
+      function formatMenu(text) {
+        const escaped = escapeHtml(normalizeMenuText(text));
+        return escaped
+          .replace(/\[(.+?)\]/g, '<span class="chip">[$1]</span>')
+          .replace(/(￦\d+)/g, "$1<br>")
+          .replace(/<br>(\s*<br>)+/g, "<br>")
+          .replace(/<br>$/g, "");
+      }
+
+      function parseDateHeader(raw) {
+        const match = raw.match(/(\d{4})\.(\d{2})\.(\d{2})\((.)\)/);
+        if (!match) return null;
+        return {
+          iso: `${match[1]}-${match[2]}-${match[3]}`,
+          month: Number(match[2]),
+          day: Number(match[3]),
+          weekday: match[4]
+        };
+      }
+
+      function parseTables(text) {
+        const lines = text.split(/\r?\n/);
+        const weekMap = new Map();
+        let weekDates = [];
+
+        for (let i = 0; i < lines.length; i += 1) {
+          const line = lines[i].trim();
+          if (!line.includes("메뉴 테이블| 구분 |")) continue;
+
+          const cells = line.split("|").map((cell) => cell.trim());
+          const restaurant = cells[0]
+            .replace(/^국민대학교\s*/, "")
+            .replace(/\s*메뉴 테이블$/, "")
+            .trim();
+          if (!allowedRestaurants.has(restaurant)) continue;
+          const headers = cells.slice(2).filter(Boolean).map(parseDateHeader).filter(Boolean);
+          if (!headers.length) continue;
+
+          if (!weekDates.length) {
+            weekDates = headers;
+            headers.forEach((dateInfo) => {
+              weekMap.set(dateInfo.iso, { ...dateInfo, entries: [] });
+            });
+          }
+
+          for (let row = i + 2; row < lines.length; row += 1) {
+            const rowLine = lines[row].trim();
+            if (!rowLine.startsWith("|")) {
+              i = row - 1;
+              break;
+            }
+            const rowCells = rowLine.split("|").map((cell) => cell.trim());
+            const station = rowCells[1];
+            if (!station || station === "---") continue;
+            const menus = rowCells.slice(2, 2 + headers.length);
+            menus.forEach((menuText, idx) => {
+              const normalized = normalizeMenuText(menuText || "");
+              if (!normalized) return;
+              const target = weekMap.get(headers[idx].iso);
+              if (!target) return;
+              target.entries.push({ restaurant, station, menu: normalized });
+            });
+          }
+        }
+
+        return weekDates.map((dateInfo) => weekMap.get(dateInfo.iso)).filter(Boolean);
+      }
+
+      function render(data) {
+        const grid = document.getElementById("week-grid");
+        const status = document.getElementById("status");
+        grid.innerHTML = "";
+
+        if (!data.length) {
+          status.textContent = ui.empty;
+          return;
+        }
+
+        status.style.display = "none";
+        const today = todayIso();
+
+        data.forEach((dayInfo) => {
+          const card = document.createElement("article");
+          card.className = "day-card" + (dayInfo.iso === today ? " is-today" : "");
+
+          const grouped = new Map();
+          dayInfo.entries.forEach((entry) => {
+            if (!grouped.has(entry.restaurant)) grouped.set(entry.restaurant, []);
+            grouped.get(entry.restaurant).push(entry);
+          });
+
+          const restaurantsHtml = Array.from(grouped.entries()).map(([restaurant, entries], restaurantIndex) => {
+            const itemsHtml = entries.map((entry) => `
+              <div class="item">
+                <p class="item-label">${escapeHtml(entry.station)}</p>
+                <p class="item-menu">${formatMenu(entry.menu)}</p>
+              </div>
+            `).join("");
+            const openClass = dayInfo.iso === today && restaurantIndex === 0 ? " is-open" : "";
+            return `
+              <section class="restaurant${openClass}">
+                <button class="restaurant-toggle" type="button">
+                  <h4>${escapeHtml(restaurant)}</h4>
+                  <span class="restaurant-arrow">▼</span>
+                </button>
+                <div class="restaurant-menu">
+                  ${itemsHtml}
+                </div>
+              </section>
+            `;
+          }).join("");
+
+          card.innerHTML = `
+            <div class="day-header">
+              <p class="day-date">${dayInfo.month}.${dayInfo.day}</p>
+              <div class="day-row">
+                <h3>${ui.days[dayInfo.weekday] || dayInfo.weekday}</h3>
+                <span class="badge">${dayInfo.iso === today ? ui.today : dayInfo.iso}</span>
+              </div>
+            </div>
+            <div class="day-list">${restaurantsHtml}</div>
+          `;
+
+          grid.appendChild(card);
+        });
+
+        grid.querySelectorAll(".restaurant-toggle").forEach((button) => {
+          button.addEventListener("click", () => {
+            const section = button.closest(".restaurant");
+            if (section) {
+              section.classList.toggle("is-open");
+            }
+          });
+        });
+      }
+
+      async function start() {
+        const status = document.getElementById("status");
+        status.textContent = ui.loading;
+        try {
+          const response = await fetch(SOURCE_URL);
+          const text = await response.text();
+          render(parseTables(text));
+        } catch (error) {
+          status.textContent = ui.error;
+        }
+      }
+
+      start();
+    </script>
+  </body>
+</html>

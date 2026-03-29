@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>학생회 관리자 페이지</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="admin-page">
+    <header class="site-header">
+      <div class="site-header-inner site-header-simple">
+        <div class="brand-block">
+          <p class="brand-year">Visual Design Student Council 2026</p>
+          <strong>학생회 관리자 페이지</strong>
+        </div>
+        <div class="header-tools admin-header-tools">
+          <a class="inline-link" href="index.html">메인으로 돌아가기</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="admin-shell">
+      <section class="intro-board admin-intro-board">
+        <p class="panel-kicker">Admin</p>
+        <h1>행사와 학생회 일정을 관리합니다.</h1>
+        <p class="panel-description">이 페이지에서 수정한 내용은 같은 브라우저의 메인 페이지에 바로 반영됩니다. 현재 버전은 배포형 DB가 아니라 브라우저 저장 기반입니다.</p>
+      </section>
+
+      <section class="admin-grid">
+        <article class="intro-board admin-board">
+          <div class="admin-board-header">
+            <div>
+              <p class="panel-kicker">Promo Banner</p>
+              <h2>행사 배너 관리</h2>
+            </div>
+            <button class="inline-link" type="button" id="add-promo-slide">배너 추가</button>
+          </div>
+          <div class="admin-list" id="promo-slide-list"></div>
+        </article>
+
+        <article class="intro-board admin-board">
+          <div class="admin-board-header">
+            <div>
+              <p class="panel-kicker">Student Events</p>
+              <h2>학생회 행사 일정 관리</h2>
+            </div>
+            <button class="inline-link" type="button" id="add-student-event">일정 추가</button>
+          </div>
+          <div class="admin-list" id="student-event-list"></div>
+        </article>
+      </section>
+
+      <section class="intro-board admin-action-board">
+        <div class="admin-toolbar">
+          <div class="admin-status-wrap">
+            <strong>저장 상태</strong>
+            <p id="admin-status" class="admin-status-text">아직 저장되지 않았습니다.</p>
+          </div>
+          <div class="admin-actions">
+            <button class="inline-link admin-danger" type="button" id="reset-admin-data">기본값으로 되돌리기</button>
+            <button class="post-submit" type="button" id="save-admin-data">저장하기</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="admin.js"></script>
+  </body>
+</html>
