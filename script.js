@@ -106,8 +106,39 @@ function readAdminCollection(key, fallback) {
   }
 }
 
+let promoSlidesData = readAdminCollection(ADMIN_STORAGE_KEYS.promoSlides, DEFAULT_PROMO_SLIDES)
+  .filter((slide) => slide && slide.title)
+  .map((slide, index) => ({
+    id: slide.id || `promo-${index + 1}`,
+    title: slide.title || "",
+    meta: slide.meta || "",
+    image: slide.image || "",
+    link: slide.link || "",
+    background: slide.background || "#b8b8b8",
+    dark: Boolean(slide.dark)
+  }));
+
 function getStoredPromoSlides() {
-  return readAdminCollection(ADMIN_STORAGE_KEYS.promoSlides, DEFAULT_PROMO_SLIDES)
+  return cloneData(promoSlidesData);
+}
+
+let studentCouncilEvents = readAdminCollection(ADMIN_STORAGE_KEYS.studentEvents, DEFAULT_STUDENT_COUNCIL_EVENTS).map((event, index) => ({
+  id: event.id || `student-event-${index + 1}`,
+  ...event,
+  type: "student-event"
+}));
+
+async function loadSupabaseSiteData() {
+  if (!window.kmuSupabaseApi) {
+    return;
+  }
+
+  const [remoteSlides, remoteEvents] = await Promise.all([
+    window.kmuSupabaseApi.fetchPromoSlides(DEFAULT_PROMO_SLIDES),
+    window.kmuSupabaseApi.fetchStudentEvents(DEFAULT_STUDENT_COUNCIL_EVENTS)
+  ]);
+
+  promoSlidesData = remoteSlides
     .filter((slide) => slide && slide.title)
     .map((slide, index) => ({
       id: slide.id || `promo-${index + 1}`,
@@ -118,12 +149,13 @@ function getStoredPromoSlides() {
       background: slide.background || "#b8b8b8",
       dark: Boolean(slide.dark)
     }));
-}
 
-const studentCouncilEvents = readAdminCollection(ADMIN_STORAGE_KEYS.studentEvents, DEFAULT_STUDENT_COUNCIL_EVENTS).map((event) => ({
-  ...event,
-  type: "student-event"
-}));
+  studentCouncilEvents = remoteEvents.map((event, index) => ({
+    id: event.id || `student-event-${index + 1}`,
+    ...event,
+    type: "student-event"
+  }));
+}
 
 const roomScheduleDays = ["월", "화", "수", "목", "금"];
 const roomScheduleRows = [
@@ -1279,7 +1311,8 @@ function renderRoomSchedulePage() {
   }, 60000);
 }
 
-function initializePage() {
+async function initializePage() {
+  await loadSupabaseSiteData();
   setupHomepageBoardEntrance();
   setupLandingIntro();
   setupPromoBanner();
